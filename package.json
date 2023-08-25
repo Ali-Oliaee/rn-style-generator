@@ -1,7 +1,8 @@
 {
   "name": "rn-style-generator",
-  "displayName": "rn-style-generator",
+  "displayName": "React Native Style Generator",
   "description": "generate styles automatically for your react-native project",
+  "icon": "src/icon.png",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.81.0"
