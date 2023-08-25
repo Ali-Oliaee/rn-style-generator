@@ -1,7 +1,7 @@
 {
   "name": "rn-style-generator",
   "displayName": "rn-style-generator",
-  "description": "generate styles automatically for your   reat native   project",
+  "description": "generate styles automatically for your react-native project",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.81.0"
@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "rn-style-generator.helloWorld",
-        "title": "Hello World"
+        "command": "rn-style-generator.gen-styles",
+        "title": "React Native: generate styles"
       }
     ]
   },
