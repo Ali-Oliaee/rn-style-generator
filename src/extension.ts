@@ -1,26 +1,85 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as React from 'react';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "rn-style-generator" is now active!');
+	const generateStyles = (file: any) => {
+		const styles: string[] = [];
+		const fileContent = file?.document.getText();
+		fileContent.split('\n').forEach((line: string) => {
+			if (line.includes('style={')) {
+				const styleName = line.split('style={')[1].split('}')[0].split('.')[1];
+				if(styleName && !styles.includes(styleName)){
+					styles.push(styleName);
+				}
+			}
+		});
+		return styles;
+	};
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
+	const generateFile = async () => {
+		const activeEditor = vscode.window.activeTextEditor;
+		const path = activeEditor?.document.fileName;
+		const createPath = path?.split('/').splice(0, path.split('/').length - 1).join('/');
+		if (checkFileContent(activeEditor)){
+			if (await checkFileExist(createPath!)){
+			vscode.workspace.fs.writeFile(vscode.Uri.file(`${createPath}/styles.ts`), new TextEncoder().encode(''));
+
+			const styles = generateStyles(activeEditor);
+			const content = `import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+${styles.map((style: string) => `  ${style}: {}`).join(',\n')}
+});
+
+export default styles;`;
+			vscode.workspace.fs.writeFile(vscode.Uri.file(`${createPath}/styles.ts`), new TextEncoder().encode(content));
+			vscode.window.showInformationMessage('Styles generated successfully, Happy Coding!');
+			}
+		} else {
+			vscode.window.showErrorMessage('This is not a valid component');
+		}
+	};
+
+	const checkFileExist = async (createPath: string) => {
+		try {
+			await vscode.workspace.fs.stat(vscode.Uri.file(`${createPath}/styles.ts`));
+		  } catch (error: any) {
+			if (error.code === 'FileNotFound') {
+			  await vscode.workspace.fs.writeFile(vscode.Uri.file(`${createPath}/styles.ts`), new Uint8Array());
+			  return true;
+			} else {
+				return false;
+			}
+		  }
+		try{
+			const confirm = await vscode.window.showInformationMessage('style file already exists. Do you want to overwrite it?', { modal: true }, 'Yes', 'No');
+			if(confirm === 'Yes'){
+				return true;
+			}else {
+				return false;
+			}
+		}catch{
+			return false;
+		}
+	};
+
+	const checkFileContent = (file: any) => {
+		try{
+			const fileContent = file?.document.getText();
+			const component = eval(fileContent);
+			return React.isValidElement(component);
+		}catch{
+			return true;
+		}
+	};
+
+
 	let disposable = vscode.commands.registerCommand('rn-style-generator.gen-styles', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from rn-style-generator!');
+		generateFile();		
 	});
 
 	context.subscriptions.push(disposable);
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
