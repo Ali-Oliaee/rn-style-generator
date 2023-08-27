@@ -3,7 +3,7 @@
   "displayName": "React Native Style Generator",
   "publisher": "Ali-Oliaee",
   "description": "generate styles automatically for your react-native project",
-  "icon": "src/icon.png",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ali-Oliaee/rn-style-generator"
