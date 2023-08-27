@@ -4,7 +4,7 @@
   "publisher": "Ali-Oliaee",
   "description": "generate styles automatically for your react-native project",
   "icon": "src/icon.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.81.0"
   },
