@@ -28,8 +28,8 @@
     "keybindings": [
       {
         "command": "rn-style-generator.gen-styles",
-        "key": "ctrl+r ctrl+t",
-        "mac": "cmd+r cmd+t",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+shift+i",
         "when": "editorTextFocus"
       }
     ]
