@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
         const styles = generateStyles(activeEditor)
         const content = `import { StyleSheet } from 'react-native';\n
 const styles = StyleSheet.create({
-${styles.map((style: string) => `  ${style}: {},\n`)}
+${styles.map((style: string) => `  ${style}: {}\n`)}
 });\n
 export default styles;`
         vscode.workspace.fs.writeFile(
